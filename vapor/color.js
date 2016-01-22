@@ -54,11 +54,16 @@ define(["vapor/math"], function(math) {
     return r | g << 8 | b << 16 | 255 << 24;
   };
 
+  var linearColorToInt = function(r, g, b, a) {
+      return linearToByte(r) | linearToByte(g) << 8 | linearToByte(b) << 16 | math.clamp(Math.round(a * 255), 0, 255) << 24;
+  };
+
   var exports = {};
   exports.linearToGamma = linearToGamma;
   exports.gammaToLinear = gammaToLinear;
   exports.linearToByte = linearToByte;
   exports.byteToLinear = byteToLinear;
   exports.byteColorToInt = byteColorToInt;
+  exports.linearColorToInt = linearColorToInt;
   return exports;
 });
