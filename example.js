@@ -1,17 +1,28 @@
-define(["vapor/application"], function(app) {
+define(["vapor/application", "vapor/wigits"], function(app, wigits) {
 
-  var Example = function(canvas) {
-    this.canvas = new app.Canvas2D(canvas, canvas.width, canvas.height, "green");
+  var Example = function(maincanvas, perfcanvas) {
+    this.canvas = new app.Canvas2D(maincanvas, maincanvas.width, maincanvas.height, "green");
     this.phase = 0;
+    this.drawTracker = new wigits.PerfTracker(
+      "draw",
+      perfcanvas,
+      perfcanvas.width,
+      perfcanvas.height
+    );
   };
 
   Example.prototype.frame = function(dt) {
     this.phase += dt;
     this.phase %= Math.PI * 2;
+
+    this.drawTracker.begin();
     this.draw();
+    this.drawTracker.end();
+    this.drawTracker.draw();
   };
 
   Example.prototype.draw = function() {
+
     var ctx = this.canvas.beginDrawing();
 
     // Draw a fake 3D tube.
@@ -24,8 +35,8 @@ define(["vapor/application"], function(app) {
     }
   };
 
-  var run = function(canvas) {
-    var example = new Example(canvas);
+    var run = function(maincanvas, perfcanvas) {
+    var example = new Example(maincanvas, perfcanvas);
     var pump = new app.AnimationPump();
     pump.onFrame(function(dt) {
       example.frame(dt);

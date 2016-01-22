@@ -10,11 +10,15 @@
 <h1>Vapor Example</h1>
 <div width="100%" style="text-align: center;">
 <canvas id="maincanvas" width="640" height="480"></canvas>
+<canvas id="perfcanvas" width="200" height="100"></canvas>
 </div>
 </body>
 <script>
 require(['example'], function(example){
-  example.run(document.getElementById("maincanvas"));
+  example.run(
+    document.getElementById("maincanvas"),
+    document.getElementById("perfcanvas")
+  );
 });
 </script>
 </html>
